@@ -1,4 +1,1 @@
-gohtml
-======
-
-HTML formatter for Go
+# GoHTML - HTML formatter for Go
