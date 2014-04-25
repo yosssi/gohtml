@@ -9,7 +9,7 @@ func TestWriteLine(t *testing.T) {
 	bf := &bytes.Buffer{}
 	writeLine(bf, "test", 1)
 	actual := bf.String()
-	expected := DefaultIndentString + "test"
+	expected := defaultIndentString + "test"
 	if actual != expected {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
 	}
@@ -30,7 +30,7 @@ func TestWriteIndent(t *testing.T) {
 	bf := &bytes.Buffer{}
 	writeIndent(bf, 1)
 	actual := bf.String()
-	expected := DefaultIndentString
+	expected := defaultIndentString
 	if actual != expected {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
 	}

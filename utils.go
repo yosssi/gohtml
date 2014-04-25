@@ -21,7 +21,7 @@ func writeLineFeed(bf *bytes.Buffer) {
 
 // writeIndent writes indents to the buffer.
 func writeIndent(bf *bytes.Buffer, indent int) {
-	bf.WriteString(strings.Repeat(DefaultIndentString, indent))
+	bf.WriteString(strings.Repeat(defaultIndentString, indent))
 }
 
 // unifyLineFeed unifies line feeds.
