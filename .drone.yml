@@ -4,6 +4,7 @@ env:
 script:
   - export GOPATH=/var/cache/drone
   - PATH=$PATH:$GOPATH/bin
+  - go get code.google.com/p/go.net/html
   - go test --cover ./...
 git:
   depth: 1
