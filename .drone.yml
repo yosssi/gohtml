@@ -1,0 +1,13 @@
+image: yosssi/go:1.2
+env:
+  - GOPATH=/var/cache/drone
+script:
+  - export GOPATH=/var/cache/drone
+  - PATH=$PATH:$GOPATH/bin
+  - go test --cover ./...
+git:
+  depth: 1
+notify:
+  email:
+    recipients:
+      - yoshida.keiji.84@gmail.com
