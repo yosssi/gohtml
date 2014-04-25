@@ -1,7 +1,6 @@
 package gohtml
 
 import (
-	"fmt"
 	"strings"
 
 	"code.google.com/p/go.net/html"
@@ -21,12 +20,15 @@ func parse(s string) *htmlDocument {
 
 func parseToken(tokenizer *html.Tokenizer, htmlDoc *htmlDocument, parent *tagElement) (bool, bool, string) {
 	tokenType := tokenizer.Next()
-	fmt.Println("***", tokenType)
 	switch tokenType {
 	case html.ErrorToken:
 		return true, false, ""
 	case html.TextToken:
-		textElement := &textElement{text: string(tokenizer.Text())}
+		text := string(tokenizer.Text())
+		if strings.TrimSpace(text) == "" {
+			break
+		}
+		textElement := &textElement{text: text}
 		appendElement(htmlDoc, parent, textElement)
 	case html.StartTagToken:
 		tagElement := &tagElement{tagName: getTagName(tokenizer), startTagRaw: string(tokenizer.Raw())}
