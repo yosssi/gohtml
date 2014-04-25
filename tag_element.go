@@ -11,12 +11,14 @@ type tagElement struct {
 }
 
 // write writes a tag to the buffer.
-func (e *tagElement) write(bf *bytes.Buffer) {
-	bf.WriteString(e.startTagRaw)
+func (e *tagElement) write(bf *bytes.Buffer, indent int) {
+	writeLine(bf, e.startTagRaw, indent)
 	for _, c := range e.children {
-		c.write(bf)
+		c.write(bf, indent+1)
 	}
-	bf.WriteString(e.endTagRaw)
+	if e.endTagRaw != "" {
+		writeLine(bf, e.endTagRaw, indent)
+	}
 }
 
 // appendChild append an element to the element's children.

@@ -11,7 +11,7 @@ type htmlDocument struct {
 func (htmlDoc *htmlDocument) html() string {
 	bf := &bytes.Buffer{}
 	for _, e := range htmlDoc.elements {
-		e.write(bf)
+		e.write(bf, StartIndent)
 	}
 	return bf.String()
 }
