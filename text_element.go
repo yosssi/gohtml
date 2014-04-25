@@ -1,6 +1,9 @@
 package gohtml
 
-import "bytes"
+import (
+	"bytes"
+	"strings"
+)
 
 // A textElement represents a text element of an HTML document.
 type textElement struct {
@@ -9,7 +12,10 @@ type textElement struct {
 
 // write writes a text to the buffer.
 func (e *textElement) write(bf *bytes.Buffer, indent int) {
-	writeLineFeed(bf)
-	writeIndent(bf, indent)
-	bf.WriteString(e.text)
+	lines := strings.Split(strings.Trim(unifyLineFeed(e.text), "\n"), "\n")
+	for _, line := range lines {
+		writeLineFeed(bf)
+		writeIndent(bf, indent)
+		bf.WriteString(line)
+	}
 }

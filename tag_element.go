@@ -14,7 +14,13 @@ type tagElement struct {
 func (e *tagElement) write(bf *bytes.Buffer, indent int) {
 	writeLine(bf, e.startTagRaw, indent)
 	for _, c := range e.children {
-		c.write(bf, indent+1)
+		var childIndent int
+		if e.endTagRaw != "" {
+			childIndent = indent + 1
+		} else {
+			childIndent = indent
+		}
+		c.write(bf, childIndent)
 	}
 	if e.endTagRaw != "" {
 		writeLine(bf, e.endTagRaw, indent)

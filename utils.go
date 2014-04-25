@@ -23,3 +23,8 @@ func writeLineFeed(bf *bytes.Buffer) {
 func writeIndent(bf *bytes.Buffer, indent int) {
 	bf.WriteString(strings.Repeat(DefaultIndentString, indent))
 }
+
+// unifyLineFeed unifies line feeds.
+func unifyLineFeed(s string) string {
+	return strings.Replace(strings.Replace(s, "\r\n", "\n", -1), "\r", "\n", -1)
+}
