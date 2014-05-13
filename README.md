@@ -1,6 +1,6 @@
 # GoHTML - HTML formatter for Go
 
-[![Build Status](http://128.199.249.74/github.com/yosssi/gohtml/status.png?branch=master)](http://128.199.249.74/github.com/yosssi/gohtml)
+[![wercker status](https://app.wercker.com/status/926cf3edc004271539be40d705d037bd/s "wercker status")](https://app.wercker.com/project/bykey/926cf3edc004271539be40d705d037bd)
 [![GoDoc](https://godoc.org/github.com/yosssi/gohtml?status.png)](https://godoc.org/github.com/yosssi/gohtml)
 
 GoHTML is an HTML formatter for [Go](http://golang.org/). You can format HTML source codes by using this package.
