@@ -3,7 +3,7 @@ package gohtml
 import (
 	"strings"
 
-	"code.google.com/p/go.net/html"
+	"golang.org/x/net/html"
 )
 
 // parse parses a stirng and converts it into an html.
