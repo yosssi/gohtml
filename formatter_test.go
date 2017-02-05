@@ -2,10 +2,9 @@ package gohtml
 
 import "testing"
 
-func TestFormat(t *testing.T) {
-	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html> <!-- aaa -->`
-	actual := Format(s)
-	expected := `<!DOCTYPE html>
+const (
+	unformattedHTML = `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html> <!-- aaa -->`
+	formattedHTML   = `<!DOCTYPE html>
 <html>
   <head>
     <title>
@@ -22,14 +21,24 @@ func TestFormat(t *testing.T) {
   </body>
 </html>
 <!-- aaa -->`
-	if actual != expected {
-		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
+)
+
+func TestFormat(t *testing.T) {
+	actual := Format(unformattedHTML)
+	if actual != formattedHTML {
+		t.Errorf("Invalid result. [expected: %s][actual: %s]", formattedHTML, actual)
+	}
+}
+
+func TestFormatBytes(t *testing.T) {
+	actual := string(FormatBytes([]byte(unformattedHTML)))
+	if actual != formattedHTML {
+		t.Errorf("Invalid result. [expected: %s][actual: %s]", formattedHTML, actual)
 	}
 }
 
 func TestFormatWithLineNo(t *testing.T) {
-	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html> <!-- aaa -->`
-	actual := FormatWithLineNo(s)
+	actual := FormatWithLineNo(unformattedHTML)
 	expected := ` 1  <!DOCTYPE html>
  2  <html>
  3    <head>

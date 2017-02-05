@@ -1,10 +1,13 @@
 package gohtml
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestParse(t *testing.T) {
 	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html><!-- aaa --><a>`
-	htmlDoc := parse(s)
+	htmlDoc := parse(strings.NewReader(s))
 	actual := htmlDoc.html()
 	expected := `<!DOCTYPE html>
 <html>
