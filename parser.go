@@ -1,15 +1,15 @@
 package gohtml
 
 import (
-	"strings"
-
 	"golang.org/x/net/html"
+	"io"
+	"strings"
 )
 
 // parse parses a stirng and converts it into an html.
-func parse(s string) *htmlDocument {
+func parse(r io.Reader) *htmlDocument {
 	htmlDoc := &htmlDocument{}
-	tokenizer := html.NewTokenizer(strings.NewReader(s))
+	tokenizer := html.NewTokenizer(r)
 	for {
 		if errorToken, _, _ := parseToken(tokenizer, htmlDoc, nil); errorToken {
 			break

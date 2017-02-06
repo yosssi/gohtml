@@ -9,11 +9,16 @@ type htmlDocument struct {
 
 // html generates an HTML source code and returns it.
 func (htmlDoc *htmlDocument) html() string {
+	return string(htmlDoc.bytes())
+}
+
+// bytes reads from htmlDocument's internal array of elements and returns HTML source code
+func (htmlDoc *htmlDocument) bytes() []byte {
 	bf := &bytes.Buffer{}
 	for _, e := range htmlDoc.elements {
 		e.write(bf, startIndent)
 	}
-	return bf.String()
+	return bf.Bytes()
 }
 
 // append appends an element to the htmlDocument.

@@ -8,7 +8,12 @@ import (
 
 // Format parses the input HTML string, formats it and returns the result.
 func Format(s string) string {
-	return parse(s).html()
+	return parse(strings.NewReader(s)).html()
+}
+
+// FormatBytes parses input HTML as bytes, formats it and returns the result.
+func FormatBytes(b []byte) []byte {
+	return parse(bytes.NewReader(b)).bytes()
 }
 
 // Format parses the input HTML string, formats it and returns the result with line no.
