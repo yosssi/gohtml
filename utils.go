@@ -6,10 +6,12 @@ import (
 )
 
 // writeLine writes an HTML line to the buffer.
-func writeLine(bf *bytes.Buffer, s string, indent int) {
+func writeLine(bf *bytes.Buffer, indent int, strs ...string) {
 	writeLineFeed(bf)
 	writeIndent(bf, indent)
-	bf.WriteString(s)
+	for _, s := range strs {
+		bf.WriteString(s)
+	}
 }
 
 // writeLineFeed writes a line feed to the buffer.
