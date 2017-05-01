@@ -7,7 +7,7 @@ import (
 
 func TestWriteLine(t *testing.T) {
 	bf := &bytes.Buffer{}
-	writeLine(bf, "test", 1)
+	writeLine(bf, 1, "test")
 	actual := bf.String()
 	expected := defaultIndentString + "test"
 	if actual != expected {
@@ -17,7 +17,7 @@ func TestWriteLine(t *testing.T) {
 
 func TestWriteLineFeed(t *testing.T) {
 	bf := &bytes.Buffer{}
-	writeLine(bf, "test", 0)
+	writeLine(bf, 0, "test")
 	writeLineFeed(bf)
 	actual := bf.String()
 	expected := "test\n"
