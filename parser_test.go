@@ -45,3 +45,20 @@ func TestAppendElement(t *testing.T) {
 		t.Errorf("htmlDocument.elements is invalid. [expected: %+v][actual: %+v]", []element{textElem}, htmlDoc.elements)
 	}
 }
+
+func TestHtmlEscape(t *testing.T) {
+	s := `<!DOCTYPE html><html><body><div>0 &lt; 1. great insight! &lt;/sarcasm&gt; over&amp;out.&</div></body></html>`
+	expected := `<!DOCTYPE html>
+<html>
+  <body>
+    <div>
+      0 &lt; 1. great insight! &lt;/sarcasm&gt; over&amp;out.&
+    </div>
+  </body>
+</html>`
+	htmlDoc := parse(strings.NewReader(s))
+	actual := htmlDoc.html()
+	if actual != expected {
+		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
+	}
+}
