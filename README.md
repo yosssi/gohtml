@@ -72,7 +72,7 @@ Output:
 </html>
 ```
 
-## Ouput Formatted HTML with Line No
+## Output Formatted HTML with Line No
 
 You can output formatted HTML source codes with line no by calling `FormatWithLineNo`:
 
