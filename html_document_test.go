@@ -69,3 +69,33 @@ func TestCondense(t *testing.T) {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
 	}
 }
+
+func TestHTMLTextWithNewline(t *testing.T) {
+	s := `
+<!DOCTYPE html><html><head></head><body>
+<div>
+  <span>
+    I am content.
+  </span>
+</div>
+</body></html>
+	`
+	htmlDoc := parse(strings.NewReader(s))
+
+	actual := htmlDoc.html()
+	expected := `<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <div>
+      <span>
+        I am content.
+      </span>
+    </div>
+  </body>
+</html>`
+	if actual != expected {
+		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
+	}
+}

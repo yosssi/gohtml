@@ -25,7 +25,8 @@ func parseToken(tokenizer *html.Tokenizer, htmlDoc *htmlDocument, parent *tagEle
 		return true, false, ""
 	case html.TextToken:
 		text := string(tokenizer.Raw())
-		if strings.TrimSpace(text) == "" {
+		text = strings.TrimSpace(text)
+		if text == "" {
 			break
 		}
 		textElement := &textElement{text: text}
