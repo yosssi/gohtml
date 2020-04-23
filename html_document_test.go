@@ -30,6 +30,13 @@ func TestHTMLDocumentHTML(t *testing.T) {
 	if actual != expected {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
 	}
+
+	// Try again to test idempotency
+	htmlDoc = parse(strings.NewReader(actual))
+	actual = htmlDoc.html()
+	if actual != expected {
+		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
+	}
 }
 
 func TestHTMLDocumentAppend(t *testing.T) {
