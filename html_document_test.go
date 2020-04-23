@@ -6,7 +6,7 @@ import (
 )
 
 func TestHTMLDocumentHTML(t *testing.T) {
-	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html><!-- aaa -->`
+	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/><div class="empty"></div></body></html><!-- aaa -->`
 	htmlDoc := parse(strings.NewReader(s))
 
 	actual := htmlDoc.html()
@@ -24,6 +24,7 @@ func TestHTMLDocumentHTML(t *testing.T) {
       Line2
     </p>
     <br/>
+    <div class="empty"></div>
   </body>
 </html>
 <!-- aaa -->`
@@ -60,6 +61,7 @@ func TestCondense(t *testing.T) {
 		`<em>Not<div>Inline</div></em>3` +
 		`<strong>Un-<a href="Lorem ipsum dolor sit amet, consectetur adipiscing elit">inlined4</a></strong>` +
 		`</p><p>A Single Line</p><br/>` +
+		`<div class="empty"></div>` +
 		`</body></html><!-- aaa -->`
 	htmlDoc := parse(strings.NewReader(s))
 	actual := htmlDoc.html()
@@ -86,6 +88,7 @@ func TestCondense(t *testing.T) {
     </p>
     <p>A Single Line</p>
     <br/>
+    <div class="empty"></div>
   </body>
 </html>
 <!-- aaa -->`
@@ -113,8 +116,7 @@ func TestHTMLTextWithNewline(t *testing.T) {
 	actual := htmlDoc.html()
 	expected := `<!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head></head>
   <body>
     <div>
       <span>
@@ -159,8 +161,7 @@ func TestPreformatting(t *testing.T) {
 	actual := htmlDoc.html()
 	expected := `<!DOCTYPE html>
 <html>
-  <head>
-  </head>
+  <head></head>
   <body>
     <div>
       <span>

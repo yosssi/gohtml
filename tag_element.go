@@ -127,7 +127,9 @@ func (e *tagElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool 
 	}
 
 	if e.endTagRaw != "" {
-		bf.writeLineFeed()
+		if len(e.children) > 0 {
+			bf.writeLineFeed()
+		}
 		bf.indentLevel--
 		bf.writeToken(e.endTagRaw, formatterTokenType_Tag)
 	}
