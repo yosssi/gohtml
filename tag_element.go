@@ -7,7 +7,11 @@ type tagElement struct {
 	tagName     string
 	startTagRaw string
 	endTagRaw   string
-	children    []element
+
+	parent   *tagElement
+	children []element
+
+	isRaw                 bool
 	isChildrenInlineCache *bool
 }
 
@@ -32,7 +36,7 @@ var InlineTags = map[string]bool{
 var InlineTagMaxLength = 40
 
 func (e *tagElement) isInline() bool {
-	if !InlineTags[e.tagName] || len(e.startTagRaw) > InlineTagMaxLength {
+	if e.isRaw || !InlineTags[e.tagName] || len(e.startTagRaw) > InlineTagMaxLength {
 		return false
 	}
 	return e.isChildrenInline()
@@ -57,6 +61,23 @@ func (e *tagElement) isChildrenInline() bool {
 
 // write writes a tag to the buffer.
 func (e *tagElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool {
+	if e.isRaw {
+		if e.parent != nil && !e.parent.isRaw {
+			bf.writeLineFeed()
+			bf.writeIndent()
+			bf.rawMode = true
+			defer func() {
+				bf.rawMode = false
+			}()
+		}
+		bf.writeToken(e.startTagRaw, formatterTokenType_Tag)
+		for _, child := range e.children {
+			child.write(bf, true)
+		}
+		bf.writeToken(e.endTagRaw, formatterTokenType_Tag)
+		return false
+	}
+
 	if e.isChildrenInline() && (e.endTagRaw != "" || e.isInline()) {
 		// Write the condensed output to a separate buffer, in case it doesn't work out
 		condensedBuffer := *bf

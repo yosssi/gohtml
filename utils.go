@@ -15,7 +15,8 @@ const (
 )
 
 type formattedBuffer struct {
-	buffer *bytes.Buffer
+	buffer  *bytes.Buffer
+	rawMode bool
 
 	indentString string
 	indentLevel  int
@@ -28,13 +29,15 @@ type formattedBuffer struct {
 }
 
 func (bf *formattedBuffer) writeLineFeed() {
-	// Strip trailing newlines
-	bf.buffer = bytes.NewBuffer(bytes.TrimRightFunc(
-		bf.buffer.Bytes(),
-		func(r rune) bool {
-			return r != '\n' && unicode.IsSpace(r)
-		},
-	))
+	if !bf.rawMode {
+		// Strip trailing newlines
+		bf.buffer = bytes.NewBuffer(bytes.TrimRightFunc(
+			bf.buffer.Bytes(),
+			func(r rune) bool {
+				return r != '\n' && unicode.IsSpace(r)
+			},
+		))
+	}
 
 	bf.buffer.WriteString("\n")
 	bf.curLineLength = 0
@@ -47,6 +50,12 @@ func (bf *formattedBuffer) writeIndent() {
 }
 
 func (bf *formattedBuffer) writeToken(token string, kind formatterTokenType) {
+	if bf.rawMode {
+		bf.buffer.WriteString(token)
+		bf.curLineLength += len(token)
+		return
+	}
+
 	if bf.prevTokenType == formatterTokenType_Nothing && strings.TrimSpace(token) == "" {
 		// It's a whitespace token, but we already have indentation which functions
 		// the same, so we ignore it

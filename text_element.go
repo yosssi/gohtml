@@ -7,7 +7,8 @@ import (
 
 // A textElement represents a text element of an HTML document.
 type textElement struct {
-	text string
+	text   string
+	parent *tagElement
 }
 
 func (e *textElement) isInline() bool {
@@ -18,6 +19,10 @@ func (e *textElement) isInline() bool {
 // write writes a text to the buffer.
 func (e *textElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool {
 	text := unifyLineFeed(e.text)
+	if e.parent != nil && e.parent.isRaw {
+		bf.writeToken(text, formatterTokenType_Text)
+		return true
+	}
 
 	if !isPreviousNodeInline {
 		bf.writeLineFeed()
