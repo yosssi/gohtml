@@ -10,8 +10,13 @@ type textElement struct {
 	text string
 }
 
+func (e *textElement) isInline() bool {
+	// Text nodes are always considered to be inline
+	return true
+}
+
 // write writes a text to the buffer.
-func (e *textElement) write(bf *formattedBuffer, isPreviousNodeInline bool) {
+func (e *textElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool {
 	text := unifyLineFeed(e.text)
 
 	if !isPreviousNodeInline {
@@ -29,4 +34,5 @@ func (e *textElement) write(bf *formattedBuffer, isPreviousNodeInline bool) {
 			bf.writeToken(word, formatterTokenType_Text)
 		}
 	}
+	return true
 }

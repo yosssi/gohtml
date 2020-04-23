@@ -30,8 +30,9 @@ func (htmlDoc *htmlDocument) bytes() []byte {
 		indentLevel:  startIndent,
 	}
 
+	isPreviousNodeInline := true
 	for _, child := range htmlDoc.elements {
-		child.write(bf, false)
+		isPreviousNodeInline = child.write(bf, isPreviousNodeInline)
 	}
 	return bf.buffer.Bytes()
 }

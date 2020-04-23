@@ -53,7 +53,14 @@ func TestCondense(t *testing.T) {
 	defer func() {
 		Condense = false
 	}()
-	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><p>A Single Line</p><br/></body></html><!-- aaa -->`
+	s := `<!DOCTYPE html><html><head><title>This is a title.</title></head>` +
+		`<body><p>` +
+		`<strong><code><a>In</a></code>Line</strong>1<br>` +
+		`Line2<br />` +
+		`<em>Not<div>Inline</div></em>3` +
+		`<strong>Un-<a href="Lorem ipsum dolor sit amet, consectetur adipiscing elit">inlined4</a></strong>` +
+		`</p><p>A Single Line</p><br/>` +
+		`</body></html><!-- aaa -->`
 	htmlDoc := parse(strings.NewReader(s))
 	actual := htmlDoc.html()
 	expected := `<!DOCTYPE html>
@@ -63,9 +70,19 @@ func TestCondense(t *testing.T) {
   </head>
   <body>
     <p>
-      Line1
+      <strong><code><a>In</a></code>Line</strong>1
       <br>
       Line2
+      <br />
+      <em>
+        Not
+        <div>Inline</div>
+      </em>
+      3
+      <strong>
+        Un-
+        <a href="Lorem ipsum dolor sit amet, consectetur adipiscing elit">inlined4</a>
+      </strong>
     </p>
     <p>A Single Line</p>
     <br/>
@@ -82,7 +99,11 @@ func TestHTMLTextWithNewline(t *testing.T) {
 <!DOCTYPE html><html><head></head><body>
 <div>
   <span>
-    I am content.
+    I am content,
+
+      <strong>spaced
+
+        a bit weird.</strong>
   </span>
 </div>
 </body></html>
@@ -97,7 +118,12 @@ func TestHTMLTextWithNewline(t *testing.T) {
   <body>
     <div>
       <span>
-        I am content.
+        I am content,
+        <strong>
+          spaced
+
+          a bit weird.
+        </strong>
       </span>
     </div>
   </body>
