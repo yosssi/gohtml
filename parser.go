@@ -18,6 +18,15 @@ func parse(r io.Reader) *htmlDocument {
 	return htmlDoc
 }
 
+// Function that identifies which tags will be treated as containing preformatted
+// content. Such tags will have the formatting of all its contents preserved
+// unchanged.
+// The opening tag html.Token is passed to this function.
+// By default, only <pre> and <textarea> tags are considered preformatted.
+var IsPreformatted = func(token html.Token) bool {
+	return token.Data == "pre" || token.Data == "textarea"
+}
+
 func parseToken(tokenizer *html.Tokenizer, htmlDoc *htmlDocument, parent *tagElement) (bool, bool, string) {
 	tokenType := tokenizer.Next()
 	switch tokenType {
@@ -25,14 +34,20 @@ func parseToken(tokenizer *html.Tokenizer, htmlDoc *htmlDocument, parent *tagEle
 		return true, false, ""
 	case html.TextToken:
 		text := string(tokenizer.Raw())
-		text = strings.TrimSpace(text)
-		if text == "" {
+		if strings.TrimSpace(text) == "" && (parent == nil || !parent.isRaw) {
 			break
 		}
-		textElement := &textElement{text: text}
+		textElement := &textElement{text: text, parent: parent}
 		appendElement(htmlDoc, parent, textElement)
 	case html.StartTagToken:
-		tagElement := &tagElement{tagName: getTagName(tokenizer), startTagRaw: string(tokenizer.Raw())}
+		raw := string(tokenizer.Raw())
+		token := tokenizer.Token()
+		tagElement := &tagElement{
+			tagName:     string(token.Data),
+			startTagRaw: raw,
+			isRaw:       IsPreformatted(token) || (parent != nil && parent.isRaw),
+			parent:      parent,
+		}
 		appendElement(htmlDoc, parent, tagElement)
 		for {
 			errorToken, parentEnded, unsetEndTag := parseToken(tokenizer, htmlDoc, tagElement)

@@ -7,9 +7,9 @@ import (
 
 func TestTextElementWrite(t *testing.T) {
 	textElem := &textElement{text: "Test text"}
-	bf := &bytes.Buffer{}
-	textElem.write(bf, 0)
-	actual := bf.String()
+	bf := &formattedBuffer{buffer: &bytes.Buffer{}}
+	textElem.write(bf, true)
+	actual := bf.buffer.String()
 	expected := "Test text"
 	if actual != expected {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
