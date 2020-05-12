@@ -140,14 +140,14 @@ func TestPreformatting(t *testing.T) {
 <!DOCTYPE html><html><head></head><body>
 <div>
   <span>
-    I am content,
+    I am <br />content,
 
       <strong>spaced
 
         a bit weird.</strong>
   </span>
   <pre>
-    The same content,
+    The same <br />content,
 
       <strong>but
 
@@ -165,7 +165,9 @@ func TestPreformatting(t *testing.T) {
   <body>
     <div>
       <span>
-        I am content,
+        I am
+        <br />
+        content,
         <strong>
           spaced
 
@@ -173,7 +175,7 @@ func TestPreformatting(t *testing.T) {
         </strong>
       </span>
       <pre>
-    The same content,
+    The same <br />content,
 
       <strong>but
 

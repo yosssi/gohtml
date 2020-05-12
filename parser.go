@@ -67,7 +67,12 @@ func parseToken(tokenizer *html.Tokenizer, htmlDoc *htmlDocument, parent *tagEle
 	case html.EndTagToken:
 		return false, true, setEndTagRaw(tokenizer, parent, getTagName(tokenizer))
 	case html.DoctypeToken, html.SelfClosingTagToken, html.CommentToken:
-		tagElement := &tagElement{tagName: getTagName(tokenizer), startTagRaw: string(tokenizer.Raw())}
+		tagElement := &tagElement{
+			tagName:     getTagName(tokenizer),
+			startTagRaw: string(tokenizer.Raw()),
+			isRaw:       parent != nil && parent.isRaw,
+			parent:      parent,
+		}
 		appendElement(htmlDoc, parent, tagElement)
 	}
 	return false, false, ""
