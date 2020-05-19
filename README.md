@@ -5,6 +5,12 @@
 
 GoHTML is an HTML formatter for [Go](http://golang.org/). You can format HTML source codes by using this package.
 
+## Install
+
+```
+go get -u github.com/yosssi/gohtml
+```
+
 ## Example
 
 Example Go source code:
