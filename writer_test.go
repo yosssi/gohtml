@@ -17,22 +17,24 @@ func TestWriterSetLastElement(t *testing.T) {
 func TestWriterWrite(t *testing.T) {
 	buf := &bytes.Buffer{}
 	wr := NewWriter(buf)
-	n, err := wr.Write([]byte("<html><head><title>This is a title.</title></head><body><p>test</p></body></html>"))
+	input := []byte("<html><head><title>This is a title.</title></head><body><p>test</p></body></html>")
+	n, err := wr.Write(input)
 	if err != nil {
 		t.Errorf("An error occurred. [error: %s]", err.Error())
 	}
-	expected := 129
+	expected := len(input)
 	if n != expected {
 		t.Errorf("Invalid return value. [expected: %d][actual: %d]", expected, n)
 	}
 
 	buf = &bytes.Buffer{}
 	wr = NewWriter(buf)
-	n, err = wr.Write([]byte(""))
+	input = []byte("")
+	n, err = wr.Write(input)
 	if err != nil {
 		t.Errorf("An error occurred. [error: %s]", err.Error())
 	}
-	expected = 0
+	expected = len(input)
 	if n != expected {
 		t.Errorf("Invalid return value. [expected: %d][actual: %d]", expected, n)
 	}
