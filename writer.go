@@ -20,11 +20,11 @@ func (wr *Writer) SetLastElement(lastElement string) *Writer {
 
 // Write writes the parameter.
 func (wr *Writer) Write(p []byte) (n int, err error) {
-	wr.bf.Write(p)
+	n, _ = wr.bf.Write(p) // (*bytes.Buffer).Write never produces an error
 	if bytes.HasSuffix(p, []byte(wr.lastElement)) {
-		return wr.writer.Write([]byte(Format(wr.bf.String()) + "\n"))
+		_, err = wr.writer.Write([]byte(Format(wr.bf.String()) + "\n"))
 	}
-	return 0, nil
+	return n, err
 }
 
 // NewWriter generates a Writer and returns it.
